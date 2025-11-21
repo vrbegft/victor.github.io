@@ -2,16 +2,30 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Mi primera página en GitHub Pages</title>
+  <title>Laboratorio XSS Reflejado</title>
 </head>
 <body>
-  <h1>Hola desde GitHub Pages</h1>
-  <p>Esta es mi primera web servida desde GitHub.</p>
+  <h1>Laboratorio XSS Reflejado (entorno seguro)</h1>
 
-  <form>
-    <label for="mensaje">Escribe un mensaje:</label>
-    <input type="text" id="mensaje" name="mensaje" />
+  <form method="GET">
+    <label for="mensaje">Introduce un mensaje:</label>
+    <input type="text" id="mensaje" name="mensaje">
     <button type="submit">Enviar</button>
   </form>
+
+  <h2>Resultado:</h2>
+  <div id="salida">
+    <!-- ⚠️ Vulnerabilidad intencional:
+         Al usar innerHTML directamente con la entrada del usuario,
+         se interpretará como HTML o JavaScript. -->
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const salida = document.getElementById('salida');
+      const mensaje = params.get('mensaje') || "";
+
+      // ❌ CÓDIGO INTENCIONALMENTE VULNERABLE
+      salida.innerHTML = mensaje;
+    </script>
+  </div>
 </body>
 </html>
